@@ -8,6 +8,23 @@ def midpoint(A,B):
     Bx,By = B
     return ((Ax+Bx)/2.0, (Ay+By)/2.0)
 
+def slope(L1):
+    p1,p2 = L1
+    p1x,p1y = p1
+    p2x,p2y = p2
+    return ((p2y-p1y),(p2x-p1x))
+
+def normal(L1):
+    p1,p2 = L1
+    slp = slope(L1)
+    a,b = slp
+    return (-b,a)
+
+def norm(vec):
+    x,y = vec
+    d =(x*x+y*y)**.5
+    return (x/d,y/d)
+
 def lineintersect(L1,L2):
     ## points on the line
     p1,p2 = L1
@@ -55,3 +72,18 @@ def ParabolicArc(A,B,C):
     for lpind, lp in linepairs:
         if lpind != len(linepairs)-1
         arcpoints.append(lineintersect(lp,linepairs[lpind+1]))
+
+    return arcpoints
+
+def Skeleton(arcpoints):
+    ## arcpoints determine the position of skeleton lines
+    ## Normal (slope) determines the general direction of the skeleton
+    ## Normed vector
+    for iid,i in enumerate(arcpoints):
+        if iid != len(arcpoints)-1:
+            L = (i,arcpoints[iid+1])
+            nslope = normal(L)
+            ny,nx = nslope
+            nvec = (nx,ny)
+            nvec = norm(nvec)
+            ## skeleton length is determined by desired magnitude for inc
