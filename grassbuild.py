@@ -1,7 +1,8 @@
 import random
-global NumStrings
+global NumStrings, Weight
 NumStrings = 20
-
+Weight = 10
+## weight is 0 at the top and 2/3 at the bottom
 
 def midpoint(A,B):
     Ax,Ay = A
@@ -24,6 +25,19 @@ def norm(vec):
     x,y = vec
     d =(x*x+y*y)**.5
     return (x/d,y/d)
+
+def scale(scale,vec):
+    x,y = vec
+    return (scale*x,scale*y)
+
+def translate(P,vec):
+    x,y = vec
+    px,py = P
+    return (x+px,y+py)
+
+def opp(vec):
+    x,y = vec
+    return (-1*x,-1*y)
 
 def lineintersect(L1,L2):
     ## points on the line
@@ -79,6 +93,8 @@ def Skeleton(arcpoints):
     ## arcpoints determine the position of skeleton lines
     ## Normal (slope) determines the general direction of the skeleton
     ## Normed vector
+    cpoint = len(arcpoints)/2
+    skeletonpositions = {}
     for iid,i in enumerate(arcpoints):
         if iid != len(arcpoints)-1:
             L = (i,arcpoints[iid+1])
@@ -87,3 +103,14 @@ def Skeleton(arcpoints):
             nvec = (nx,ny)
             nvec = norm(nvec)
             ## skeleton length is determined by desired magnitude for inc
+            if iid > cpoint:
+                cslope = Weight*(1.0/3.0)/(cpoint-len(arcpoints)-1)
+                wght = cslope*(iid - cpoint) + Weight
+            else:
+                cslope = Weight/(cpoint)
+                wght = cslope*(iid - cpoint) + Weight
+            svec = scale(wght,nvec)
+            2pos = arcpoints[iid+1]
+            skeletonpos1 = translate(2pos,svec)
+            skeletonpos2 = opp(skeletonpos1)
+            skeletonpositions[i] = (skeletonpos1,skeletonpos2)
