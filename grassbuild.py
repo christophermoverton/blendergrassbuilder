@@ -1,9 +1,22 @@
 import random
+import math
 global NumStrings, Weight
+global MaxinflectionangleAC, MaxinflectionangleAB, MaxinflectionangleBC
+global MaxradiusAC
 NumStrings = 20
 Weight = 10
+MaxinflectionangleAC = 10 ## in degrees from vertical randomized plus/minus
+MaxinflectionangleAB = 25   ## in degrees from vertical
+MaxinflectionangleBC = 25  ## in degrees from vertical
 ## weight is 0 at the top and 2/3 at the bottom
+MaxradiusAC = 3
 
+def radians(deg):
+    return deg*math.pi/180.0
+
+def polarx(theta,r):
+    return (r*math.cos(theta),r*math.sin(theta))
+    
 def midpoint(A,B):
     Ax,Ay = A
     Bx,By = B
@@ -114,3 +127,22 @@ def Skeleton(arcpoints):
             skeletonpos1 = translate(2pos,svec)
             skeletonpos2 = opp(skeletonpos1)
             skeletonpositions[i] = (skeletonpos1,skeletonpos2)
+
+    return skeletonpositions
+
+def rPickControlPoints():
+    raAC = random.randint(-MaxinflectionangleAC,MaxinflectionangleAC)
+    raAB = random.randint(-MaxinflectionangleAB,MaxinflectionangleAB)
+    raCB = random.randint(0,MaxinflectionangleAB)
+    if not raAB > 0:
+        raCB = -raCB
+    raAC = 90 - raAC
+    raAC = radians(raAC)
+    A = polarx(raAC,MaxradiusAC)
+    C = (0.0,0.0)
+    raAB = 270 + raAB
+    raAB = radians(raAB)
+    p1B = polarx(raAB,1.0)
+    p1B = translate(p1B, A)
+    L1B = (A,p1B)
+    raCB = 
