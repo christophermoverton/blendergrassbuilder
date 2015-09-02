@@ -131,6 +131,8 @@ def Skeleton(arcpoints):
     return skeletonpositions
 
 def rPickControlPoints():
+    ## get Random control points for the parabolic arc
+    ## These are A and B of a three point system (ABC)
     raAC = random.randint(-MaxinflectionangleAC,MaxinflectionangleAC)
     raAB = random.randint(-MaxinflectionangleAB,MaxinflectionangleAB)
     raCB = random.randint(0,MaxinflectionangleAB)
@@ -145,4 +147,9 @@ def rPickControlPoints():
     p1B = polarx(raAB,1.0)
     p1B = translate(p1B, A)
     L1B = (A,p1B)
-    raCB = 
+    raCB = 90 - raCB
+    raCB = radians(raCB)
+    p2B = polarx(raCB,1.0)
+    L2B = (C,p2B)
+    B = lineintersect(L1B,L2B)
+    return A,B
