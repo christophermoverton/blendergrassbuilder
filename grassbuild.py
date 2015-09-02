@@ -133,6 +133,10 @@ def Skeleton(arcpoints):
 def rPickControlPoints():
     ## get Random control points for the parabolic arc
     ## These are A and B of a three point system (ABC)
+    ## Control point A is established by random angle from B off
+    ## vertical.
+    ## Control point B is a little trickier in this method.
+    ## We intersect two randomly generated polar angles from A and C.
     raAC = random.randint(-MaxinflectionangleAC,MaxinflectionangleAC)
     raAB = random.randint(-MaxinflectionangleAB,MaxinflectionangleAB)
     raCB = random.randint(0,MaxinflectionangleAB)
