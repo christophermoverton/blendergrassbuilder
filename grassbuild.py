@@ -97,11 +97,15 @@ def ParabolicArc(A,B,C):
     linepairs = []
     for iind, i in enumerate(segAB):
         linepairs.append((i,segBC[iind]))
+    print(linepairs)
     arcpoints = [A]
-    for lpind, lp in linepairs:
+    for lpind, lp in enumerate(linepairs):
         if lpind != len(linepairs)-1:
-            arcpoints.append(lineintersect(lp,linepairs[lpind+1]))
-
+            print(linepairs[lpind+1])
+            ap = lineintersect(lp,linepairs[lpind+1])
+            print(ap)
+            arcpoints.append(ap)
+    print arcpoints
     return arcpoints
 
 def Skeleton(arcpoints):
@@ -161,3 +165,7 @@ def rPickControlPoints():
     L2B = (C,p2B)
     B = lineintersect(L1B,L2B)
     return A,B
+
+A,B = rPickControlPoints()
+C = (0.0,0.0)
+apoints = ParabolicArc(A,B,C)
