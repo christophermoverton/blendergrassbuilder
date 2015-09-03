@@ -54,14 +54,16 @@ def opp(vec):
 
 def lineintersect(L1,L2):
     ## points on the line
+
     p1,p2 = L1
     p3,p4 = L2
     x1,y1 = p1
     x2,y2 = p2
     x3,y3 = p3
     x4,y4 = p4
-    return (((x1*y2-y1*x2)*(x3-x4)-(x1-x2)*(x3*y4-y3*x4))/((x1-x2)*(y3-y4)-(y1-y2)*(x3-x4)),
-            ((x1*y2-y1*x2)*(y3-y4)-(y1-y2)(x3*y4-y3*x4))/((x1-x2)*(y3-y4)-(y1-y2)*(x3-x4)))
+    ipx = ((x1*y2-y1*x2)*(x3-x4)-(x1-x2)*(x3*y4-y3*x4))/((x1-x2)*(y3-y4)-(y1-y2)*(x3-x4))
+    ipy = ((x1*y2-y1*x2)*(y3-y4)-(y1-y2)*(x3*y4-y3*x4))/((x1-x2)*(y3-y4)-(y1-y2)*(x3-x4))
+    return (ipx,ipy)
 
 def ParabolicArc(A,B,C):
     segAB = [A,B]
@@ -97,8 +99,8 @@ def ParabolicArc(A,B,C):
         linepairs.append((i,segBC[iind]))
     arcpoints = [A]
     for lpind, lp in linepairs:
-        if lpind != len(linepairs)-1
-        arcpoints.append(lineintersect(lp,linepairs[lpind+1]))
+        if lpind != len(linepairs)-1:
+            arcpoints.append(lineintersect(lp,linepairs[lpind+1]))
 
     return arcpoints
 
@@ -123,8 +125,8 @@ def Skeleton(arcpoints):
                 cslope = Weight/(cpoint)
                 wght = cslope*(iid - cpoint) + Weight
             svec = scale(wght,nvec)
-            2pos = arcpoints[iid+1]
-            skeletonpos1 = translate(2pos,svec)
+            pos2 = arcpoints[iid+1]
+            skeletonpos1 = translate(pos2,svec)
             skeletonpos2 = opp(skeletonpos1)
             skeletonpositions[i] = (skeletonpos1,skeletonpos2)
 
@@ -139,7 +141,9 @@ def rPickControlPoints():
     ## We intersect two randomly generated polar angles from A and C.
     raAC = random.randint(-MaxinflectionangleAC,MaxinflectionangleAC)
     raAB = random.randint(-MaxinflectionangleAB,MaxinflectionangleAB)
-    raCB = random.randint(0,MaxinflectionangleAB)
+    raCB = random.randint(0,MaxinflectionangleBC)
+    while abs(raAB) == abs(raCB):
+        raCB = random.randint(0,MaxinflectionangleBC)
     if not raAB > 0:
         raCB = -raCB
     raAC = 90 - raAC
